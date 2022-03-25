@@ -17,14 +17,30 @@ app.get('/', (_request, response) => {
 
 const talker = 'talker.json';
 
+function getAllTalkers() {
+  return fs.readFile(talker, 'utf8')
+    .then((data) => JSON.parse(data));
+}
+
 app.get('/talker', async (req, res) => {
   try {
-    const data = await fs.readFile(talker, 'utf8');
-    res.status(200).json(JSON.parse(data));
+    const data = await getAllTalkers();
+    res.status(200).json(data);
   } catch (err) {
     console.error(`Erro ao ler o arquivo: ${talker}`);
     console.log(err);
   }
+});
+
+// Requisito 2
+app.get('/talker/:id', async (req, res) => {
+  const allTalkers = await getAllTalkers();
+
+  const peopleTalker = allTalkers.find(({ id }) => id === req.params.id);
+
+  if (!peopleTalker) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+
+  res.status(200).json(peopleTalker);
 });
 
 app.listen(PORT, () => {
