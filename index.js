@@ -15,10 +15,10 @@ app.get('/', (_request, response) => {
 
 // Requisito 1
 
-const talker = 'talker.json';
+const talkerFile = 'talker.json';
 
 function getAllTalkers() {
-  return fs.readFile(talker, 'utf8')
+  return fs.readFile(talkerFile, 'utf8')
     .then((data) => JSON.parse(data));
 }
 
@@ -27,7 +27,7 @@ app.get('/talker', async (req, res) => {
     const data = await getAllTalkers();
     res.status(200).json(data);
   } catch (err) {
-    console.error(`Erro ao ler o arquivo: ${talker}`);
+    console.error(`Erro ao ler o arquivo: ${talkerFile}`);
     console.log(err);
   }
 });
@@ -36,7 +36,9 @@ app.get('/talker', async (req, res) => {
 app.get('/talker/:id', async (req, res) => {
   const allTalkers = await getAllTalkers();
 
-  const peopleTalker = allTalkers.find(({ id }) => id === req.params.id);
+  const { id } = req.params;
+
+  const peopleTalker = allTalkers.find((oneTalker) => oneTalker.id === parseInt(id, 0));
 
   if (!peopleTalker) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 
