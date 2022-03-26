@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const getTalkerById = require('./middlewares/getTalkerById');
-const getAllTalkers = require('./middlewares/getAllTalkers');
+const { getTalkerById, getAllTalkers } = require('./middlewares/getTalkers');
 const { validateMail, validatePassword } = require('./utils/validate');
 const newToken = require('./utils/token');
 
