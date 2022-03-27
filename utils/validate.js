@@ -60,10 +60,56 @@ function validateAge(req, res, next) {
   next();
 }
 
+function validateDate(req, res) {
+  const { talk } = req.body;
+  const { watchedAt } = talk;
+  
+  const regexDate = /^\d{2}\/\d{2}\/\d{4}$/;
+  // referencia do regex ----> https://stackoverflow.com/questions/15196451/regular-expression-to-validate-datetime-format-mm-dd-yyyy
+  
+  if (!watchedAt) {
+  return res.status(400)
+  .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
+  }
+  
+  if (!watchedAt.match(regexDate)) {
+  return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
+  }
+  
+  function validateRate(req, res) {
+  const { talk } = req.body;
+  const { rate } = talk;
+  
+  if (!rate) {
+  return res.status(400)
+  .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
+  }
+  
+  if (Number(rate) < 1 || Number(rate) > 5) {
+  return res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+  }
+  }
+  
+  function validateTalk(req, res, next) {
+  const { talk } = req.body;
+  
+  if (!talk || talk === '') {
+  return res.status(400)
+  .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
+  }
+  
+  validateRate(req, res);
+  validateDate(req, res);
+  
+  next();
+  }
+
 module.exports = {
   validateMail,
   validatePassword,
   validateToken,
   validateName,
   validateAge,
+  validateTalk,
 };
