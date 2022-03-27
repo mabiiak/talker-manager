@@ -7,6 +7,7 @@ const {
   validatePassword,
   validateToken, 
   validateName,
+  validateAge,
 } = require('./utils/validate');
 
 const newToken = require('./utils/token');
@@ -33,6 +34,7 @@ app.post(
   '/talker',
   validateToken,
   validateName,
+  validateAge,
   (req, res) => {
     const { id, name, age, talk: { watchedAt, rate } } = req.body;
 
