@@ -9,9 +9,13 @@ const {
   validateName,
   validateAge,
   validateTalk,
+  validateRate,
+  validateDate,
 } = require('./utils/validate');
 
 const newToken = require('./utils/token');
+const { writeNewTalker } = require('./utils/allTalkers');
+const { allTalkers } = require('./utils/allTalkers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -30,29 +34,29 @@ app.get('/talker/:id', getTalkerById); // Requisito 2
 
 app.post('/login', validateMail, validatePassword, newToken); // Requisito 3
 
-// requisito 4
-app.post(
-  '/talker',
+app.post('/talker', // requisito 4
   validateToken,
   validateName,
   validateAge,
   validateTalk,
-  (req, res) => {
-    const { id, name, age, talk: { watchedAt, rate } } = req.body;
+  validateRate,
+  validateDate,
+  async (req, res) => {
+    const { name, age, talk } = req.body;
 
-    res.status(201).json(
-      {
-        id,
-        name,
-        age,
-        talk: {
-          watchedAt,
-          rate,
-        },
-      },
-    );
-  },
-);
+    const talker = await allTalkers();
+
+    const newTalker = {
+      name,
+      age,
+      id: +talker.length + 1,
+      talk,
+    };
+
+    const totalPerson = await writeNewTalker(newTalker);
+    console.log(totalPerson);
+    res.status(201).json(totalPerson);
+  });
 
 app.listen(PORT, () => {
   console.log('Online');

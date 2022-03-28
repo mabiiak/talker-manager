@@ -1,4 +1,4 @@
-const allTalkers = require('../utils/allTalkers');
+const { allTalkers } = require('../utils/allTalkers');
 
 const talkerFile = 'talker.json';
 

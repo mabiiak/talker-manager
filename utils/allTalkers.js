@@ -1,10 +1,24 @@
 const fs = require('fs').promises;
 
-const talkerFile = 'talker.json';
-
 function allTalkers() {
-  return fs.readFile(talkerFile, 'utf8')
+  return fs.readFile('talker.json', 'utf8')
     .then((data) => JSON.parse(data));
 }
 
-module.exports = allTalkers;
+const writeNewTalker = async (content) => {
+  try {
+    const arrContent = await allTalkers();
+
+    console.log(content);
+
+    arrContent.push(content);
+
+    await fs.writeFile('talker.json', JSON.stringify(arrContent));
+    return arrContent[arrContent.length - 1];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+module.exports = { allTalkers, writeNewTalker };
