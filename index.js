@@ -55,8 +55,7 @@ app.post('/talker', // requisito 4
     res.status(201).json(totalPerson);
   });
 
-app.put('talker/:id',
-  authToken,
+app.put('/talker/:id',
   validateToken,
   validateName,
   validateAge,
@@ -67,10 +66,10 @@ app.put('talker/:id',
     const { id } = req.params;
     const { name, age, talk } = req.body;
     
-    const editTalker = { id, name, age, talk };
+    const editTalker = { id: +id, name, age, talk };
 
-    removeTalker(id);
-    writeNewTalker(editTalker);
+    await removeTalker(id);
+    await writeNewTalker(editTalker);
 
     res.status(200).json(editTalker);
   });
