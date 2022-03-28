@@ -26,7 +26,6 @@ const removeTalker = async (personId) => {
 
   const findTalker = arrContent.filter((talker) => talker.id !== Number(personId));
 
-  // await fs.writeFile('talker.json', JSON.stringify([]));
   await fs.writeFile('talker.json', JSON.stringify(findTalker));
 };
 

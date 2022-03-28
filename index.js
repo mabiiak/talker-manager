@@ -13,7 +13,7 @@ const {
   validateDate,
 } = require('./utils/validate');
 
-const { newToken, authToken } = require('./utils/token');
+const { newToken } = require('./utils/token');
 const { allTalkers, writeNewTalker, removeTalker } = require('./utils/allTalkers');
 
 const app = express();
