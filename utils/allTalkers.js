@@ -21,4 +21,13 @@ const writeNewTalker = async (content) => {
   }
 };
 
-module.exports = { allTalkers, writeNewTalker };
+const removeTalker = async (personId) => {
+  const arrContent = await allTalkers();
+
+  const findTalker = arrContent.filter((talker) => talker.id !== Number(personId));
+
+  await fs.writeFile('talker.json', JSON.stringify([]));
+  await fs.writeFile('talker.json', JSON.stringify(findTalker));
+};
+
+module.exports = { allTalkers, writeNewTalker, removeTalker };

@@ -13,9 +13,8 @@ const {
   validateDate,
 } = require('./utils/validate');
 
-const newToken = require('./utils/token');
-const { writeNewTalker } = require('./utils/allTalkers');
-const { allTalkers } = require('./utils/allTalkers');
+const { newToken, authToken } = require('./utils/token');
+const { allTalkers, writeNewTalker, removeTalker } = require('./utils/allTalkers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -43,7 +42,6 @@ app.post('/talker', // requisito 4
   validateDate,
   async (req, res) => {
     const { name, age, talk } = req.body;
-
     const talker = await allTalkers();
 
     const newTalker = {
@@ -54,8 +52,27 @@ app.post('/talker', // requisito 4
     };
 
     const totalPerson = await writeNewTalker(newTalker);
-    console.log(totalPerson);
     res.status(201).json(totalPerson);
+  });
+
+app.put('talker/:id',
+  authToken,
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateRate,
+  validateDate,
+  async (req, res) => {
+    const { id } = req.params;
+    const { name, age, talk } = req.body;
+    
+    const editTalker = { id, name, age, talk };
+
+    removeTalker(id);
+    writeNewTalker(editTalker);
+
+    res.status(200).json(editTalker);
   });
 
 app.listen(PORT, () => {

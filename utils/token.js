@@ -6,4 +6,12 @@ function newToken(req, res) {
   res.status(200).json({ token });
 }
 
-module.exports = newToken;
+function authToken(req, res, next) {
+  const { authorization } = req.headers;
+
+  if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
+
+  next();
+}
+
+module.exports = { newToken, authToken };
