@@ -1,5 +1,7 @@
 # Boas vindas ao repositório do Talker Manager!
 
+Esse projeto foi desenvolvido durante o curso de Desenvolvimento Web da Trybe.
+
 Neste projeto foi desenvolvida uma API de um CRUD de palestrantes.
 
 ## Habilidades
